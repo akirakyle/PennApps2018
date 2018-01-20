@@ -37,6 +37,9 @@ class Spotify:
     def user_info(self):
         return repr(self.sp.current_user())
 
+    def user_id(self):
+        return self.sp.current_user()['id']
+
     def user_songs(self):
         results = self.sp.current_user_saved_tracks()
         str = ''
