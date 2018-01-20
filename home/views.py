@@ -19,7 +19,8 @@ def index(request):
 
 def auth_page(request):
     spot.auth(request.get_full_path())
-    User.objects.create(spotify_id=spot.user_id())
+    if not User.objects.get(spotify_id=spot.user_id()):
+        User.objects.create(spotify_id=spot.user_id())
     return render(request, 'home/index.html') #{'auth_url': auth_url}) #HttpResponse("should be logged in")
 
 def my_info(request):

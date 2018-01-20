@@ -1,0 +1,28 @@
+#mainjumbo {
+	text-align:center;
+background: #5C258D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #4389A2, #5C258D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #4389A2, #5C258D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+height:100vh;
+ h1 {
+ 	margin-top: 40vh;
+ 	color: white;
+ }
+}
+
+.spotify-button {
+	display: inline-block;
+
+	max-width: 200px;
+	margin-top: 10vh;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #1DB954;
+	padding:10px 30px;
+	border-radius: 50px;
+
+	&:hover {
+		background-color: #2EBD59;
+		text-color:#fff;
+	}
+}

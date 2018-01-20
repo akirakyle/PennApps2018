@@ -4,7 +4,7 @@ class Artist(models.Model):
     spotify_id = models.CharField(max_length=64, primary_key=True)
 
 class User(models.Model):
-    spotify_id = models.CharField(max_length=64, primary_key=True)
+    spotify_id = models.CharField(max_length=64, primary_key=True, default='')
     liked = models.ManyToManyField(Artist, through='Likeship', related_name='likers', blank=True)
     disliked = models.ManyToManyField(Artist, through='Dislikeship', related_name='dislikers', blank=True)
 
