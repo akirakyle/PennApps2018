@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from home.spotify import Spotify
 
-# Create your views here.
 spot = Spotify()
 
 def index(request):
@@ -14,17 +13,24 @@ def index(request):
         <p>you're already logged into spotify</p>
         <p><a href='http://localhost:8000/my_info/'>my_info</a></p>
         <p><a href='http://localhost:8000/my_songs/'>my_songs</a></p>
+        <p><a href='http://localhost:8000/my_artists/'>my_artists</a></p>
         """
     return HttpResponse(htmlLoginButton)
 
 def auth_page(request):
-    spot.auth(request.get_full_path())
-    return HttpResponse("should be logged in")
+    if spot.auth(request.get_full_path()):
+        return HttpResponse("successfully logged in")
+    else:
+        return HttpResponse("something went wrong logging in")
 
 def my_info(request):
     info = spot.user_info()
-    return HttpResponse(repr(info))
+    return HttpResponse(info)
 
 def my_songs(request):
     songs = spot.user_songs()
     return HttpResponse(songs)
+
+def my_top_artists(request):
+    artists = spot.user_top_artists()
+    return HttpResponse(artists)
