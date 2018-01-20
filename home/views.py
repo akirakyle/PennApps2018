@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from home.spotify import Spotify
 from artists.models import User
 
-# Create your views here.
 spot = Spotify()
 
 def index(request):
@@ -25,8 +24,12 @@ def auth_page(request):
 
 def my_info(request):
     info = spot.user_info()
-    return HttpResponse(repr(info))
+    return HttpResponse(info)
 
 def my_songs(request):
     songs = spot.user_songs()
     return HttpResponse(songs)
+
+def my_top_artists(request):
+    artists = spot.user_top_artists()
+    return HttpResponse(artists)
