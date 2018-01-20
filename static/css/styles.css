@@ -39,10 +39,24 @@ h3{
 	line-height:  90px;
 }
 
+a,
+a:visited,
+a:link{
+	color:black;
+}
+
+.pls {
+	color:black !important;
+}
+
+.pls:hover {
+	color:#8932ee !important;
+}
+
 p{
-	text-align: center;
 	max-width: 400px;
 	margin: 0 auto; /* aka 0 auto 0 auto, aiutpo auto resize*/
+	color: black;
 
 }
 
