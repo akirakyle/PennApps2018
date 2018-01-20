@@ -49,4 +49,10 @@ class Spotify:
         return str
 
     def user_top_artists(self):
-        return repr(self.sp.current_user_top_artists(limit=2, offset=0, time_range='long_term'))
+        result = self.sp.current_user_top_artists(limit=2, offset=0, time_range='long_term')
+        return result['items'][0]['id']
+
+    def related_artist(self, artist_id):
+        result = self.sp.artist_related_artists(artist_id)
+        print(result['artists'][0]['name'])
+        return result['artists'][0]['name']

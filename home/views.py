@@ -33,3 +33,7 @@ def my_songs(request):
 def my_top_artists(request):
     artists = spot.user_top_artists()
     return HttpResponse(artists)
+
+def my_related_artist(request):
+    artist = spot.related_artist(spot.user_top_artists())
+    return HttpResponse(artist)
