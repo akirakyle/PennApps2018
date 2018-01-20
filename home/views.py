@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from home.spotify import Spotify
+from artists.models import User
 
-# Create your views here.
 spot = Spotify()
 
 def index(request):
@@ -19,12 +19,21 @@ def index(request):
 
 def auth_page(request):
     spot.auth(request.get_full_path())
+    User.objects.create(spotify_id=spot.user_id())
     return render(request, 'home/index.html') #{'auth_url': auth_url}) #HttpResponse("should be logged in")
 
 def my_info(request):
     info = spot.user_info()
-    return HttpResponse(repr(info))
+    return HttpResponse(info)
 
 def my_songs(request):
     songs = spot.user_songs()
     return HttpResponse(songs)
+
+def my_top_artists(request):
+    artists = spot.user_top_artists()
+    return HttpResponse(artists)
+
+def my_related_artist(request):
+    artist = spot.related_artist(spot.user_top_artists())
+    return HttpResponse(artist)
