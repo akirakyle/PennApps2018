@@ -4,12 +4,16 @@
 	{% include 'includes/head.html' %}
 	{% load static %}
 	<link href="{% static 'css/styles.css'%}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/splash.css'%}">
 </head>
 <body>
-	<h1>lolmusic</h1>
+	<div class="jumbotron" id="mainjumbo">
+		<h1>lolmusic</h1>
+
 	{% if auth_url %}
-	<a href='{{ auth_url }}'>Login to Spotify</a>
+	<a href='{{ auth_url }}' class="spotify-button">Login to Spotify</a>
 	{% else %}
+	</div>
     <p><a href='http://localhost:8000/my_info/'>my_info</a></p>
     <p><a href='http://localhost:8000/my_songs/'>my_songs</a></p>
     {% endif %}
