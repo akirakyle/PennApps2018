@@ -10,10 +10,21 @@ def index(request):
     if auth_url:
         htmlLoginButton = "<a href='" + auth_url + "'>Login to Spotify</a>"
     else:
-        htmlLoginButton = "you're already logged into spotify"
+        htmlLoginButton = """
+        <p>you're already logged into spotify</p>
+        <p><a href='http://localhost:8000/my_info/'>my_info</a></p>
+        <p><a href='http://localhost:8000/my_songs/'>my_songs</a></p>
+        """
     return HttpResponse(htmlLoginButton)
 
 def auth_page(request):
-    print(request.get_full_path())
     spot.auth(request.get_full_path())
     return HttpResponse("should be logged in")
+
+def my_info(request):
+    info = spot.user_info()
+    return HttpResponse(repr(info))
+
+def my_songs(request):
+    songs = spot.user_songs()
+    return HttpResponse(songs)

@@ -1,5 +1,5 @@
 venv
 .env
 .pyc
-PennApps2018/__pycache__/
-home/__pycache__/
+*/__pycache__/
+.spotipyoauthcache
