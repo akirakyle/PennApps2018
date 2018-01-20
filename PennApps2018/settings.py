@@ -24,6 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
+SPOTIPY_CLIENT_ID = config('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = config('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URI = config('SPOTIPY_REDIRECT_URI')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
