@@ -1,0 +1,88 @@
+body {
+    font-family: "Open Sans";
+}
+
+header {
+    /*background-image: url('../images/hoho.jpg');*/
+    background-size: cover;
+    height: 400px;
+    width: 100%;
+    text-align: center;
+    font-weight: lighter;
+}
+
+nav{
+	color:black;
+	height: 75px;
+	line-height: 75px;
+}
+
+
+
+h1{
+	/*background-color: rgba(0, 0, 0, 0.6);*/
+	color: black;
+	margin-top: : 70px; /*invisible boundr, no item can be placed int that area*/
+	font-size: 60px
+}
+
+h3{
+	color:black;
+	font-size: 16px;
+}
+/*.buy{
+	background-color: red;
+	color: white;
+	border-radius: 3px;
+	font-size: 16px;
+	padding: 10px/*top*/ 40px /*right*/ 10px /*bottom*/ 40px /*left*/;
+	line-height:  90px;
+}
+
+p{
+	text-align: center;
+	max-width: 400px;
+	margin: 0 auto; /* aka 0 auto 0 auto, aiutpo auto resize*/
+
+}
+
+.row{  /*explands on bootstrap, bootstrap already has it, google this shit*/
+	color: #252527 ; /*hex code*/
+	padding: 50px 0;
+	border-bottom: 1px solid #f1f1f1;
+}
+
+h2{
+	font-size: 18px;
+	font-weight: normal;
+	text-align: center;
+	color:black;
+}
+
+.icon{
+	width: 64px;
+	height: 64px;
+	margin: 0 auto;
+	margin-bottom: 10px;
+	background-size: cover; /*image occupies entire box*/
+}
+
+#lightning{
+	background-image: url('../images/lightning.png'); /*div-box. that box will have baackground of lightning*/
+}
+
+#cloud{
+	background-image: url('../images/cloud.png'); /*div-box. that box will have baackground of lightning*/
+}
+
+#people{
+	background-image: url('../images/people.png'); /*div-box. that box will have baackground of lightning*/
+}
+
+
+
+
+
+
+
+
