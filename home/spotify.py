@@ -50,14 +50,14 @@ class Spotify:
             str += '<p>' + track['name'] + ' - ' + track['artists'][0]['name'] + '</p>'
         return str
 
-    def user_top_artists(self,i=0):
+    def user_top_artist(self,i=0):
         result = self.sp.current_user_top_artists(limit=30, offset=0, time_range='long_term')
         return result['items'][i]['id']
 
     def test_add_artists(self):
         usr = User.objects.get(spotify_id=self.user_id())
         for i in range(10):
-            sid = self.user_top_artists(i)
+            sid = self.user_top_artist(i)
             print(sid)
             try:
                 artist = Artist.objects.create(spotify_id=sid)
@@ -65,7 +65,7 @@ class Spotify:
             except IntegrityError:
                 pass
         for i in range(10,20):
-            sid = self.user_top_artists(i)
+            sid = self.user_top_artist(i)
             print(sid)
             try:
                 artist = Artist.objects.create(spotify_id=sid)
