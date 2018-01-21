@@ -102,12 +102,23 @@ class Spotify:
         dislikes = Dislikeship.objects.filter(user=usr)
         n = 20
         artists = likes.union(dislikes).order_by('date')[:n]
+        print('artist_id', artist_id)
+        print(artists)
         nlikes = artists.intersection(likes).count()
-        if nlikes/n > 0.4:
+        if nlikes/n >= 0.0:
             new_artists = self.related_artists(artist_id)
             for new_id in new_artists:
-                if (not Likeship.objects.filter(artist_id=new_id).exists() or
-                    not Dislikeship.objects.filter(artist_id=new_id).exists()):
+                print('new_id', new_id)
+                if Artist.objects.filter(spotify_id=new_id).exists():
+                    artist = Artist.objects.get(spotify_id=new_id)
+                    print(artist)
+                    print('Likeship', Likeship.objects.filter(user=usr,artist=artist).exists())
+                    print('dislikeshp', Dislikeship.objects.filter(user=new_id,artist=artist).exists())
+                    if not (Likeship.objects.filter(user=usr,artist=artist).exists() or
+                            Dislikeship.objects.filter(user=usr,artist=artist).exists()):
+                        return new_id
+                else:
                     return new_id
             else:
-                return get_next_artist(likes.order_by('date')[0])
+                return self.get_next_artist(likes.order_by('date')[0])
+        #else:

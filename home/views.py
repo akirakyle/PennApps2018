@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from home.spotify import Spotify
-from home.models import User, Artist
+from home.models import User, Artist, Likeship, Dislikeship
 from django.shortcuts import get_object_or_404
 
 spot = Spotify()
@@ -20,20 +20,26 @@ def auth_page(request):
 def do_the_thing(request):
     #stuff = spot.user_info()
     #stuff = spot.user_songs()
-    #stuff = spot.user_top_artist()
-    #stuff = spot.artist_name(spot.user_top_artists())
     #stuff = spot.related_artists(spot.user_top_artists())
     #stuff = spot.artist_top_track(spot.user_top_artists())
-    #stuff = spot.artist_image_url(spot.user_top_artists())
-    #stuff = spot.artist_song_url(spot.user_top_artists())
-    spot.test_add_artists()
-    stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artist()))
+    #spot.test_add_artists()
+    #stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artist()))
 
-    #artist_id = User.objects.get(spotify_id=spot.user_id()).current_artist
+    artist_id = User.objects.get(spotify_id=spot.user_id()).current_artist.spotify_id
     #print(artist_id)
-    #artist = get_object_or_404(Artist, pk=artist_id)
-    #return render(request, 'home/detail.html', {'artist': artist, 'image': spot.artist_image_url(artist_id), 'song': spot.artist_song_url(artist_id), 'name': spot.artist_name(artist_id)})
-    return HttpResponse(stuff)
+    artist = get_object_or_404(Artist, pk=artist_id)
+    #print(artist)
+    return render(request, 'home/detail.html', {'artist': artist, 'image': spot.artist_image_url(artist_id), 'song': spot.artist_song_url(artist_id), 'name': spot.artist_name(artist_id)})
+
+def liked(request):
+    usr = User.objects.get(spotify_id=spot.user_id())
+    Likeship.objects.create(user=usr, artist=usr.current_artist)
+    new_id = spot.get_next_artist(usr.current_artist.spotify_id)
+    artist = Artist.objects.create(spotify_id=new_id)
+    usr.current_artist = artist
+    usr.save()
+    
+    return redirect('/artists/'+new_id)
 
 def detail(request, artist_id):
     artist = get_object_or_404(Artist, pk=artist_id)
