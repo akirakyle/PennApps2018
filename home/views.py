@@ -15,6 +15,7 @@ def auth_page(request):
     if not User.objects.filter(spotify_id=spot.user_id()).exists():
         artist = Artist.objects.create(spotify_id=spot.user_top_artist())
         User.objects.create(spotify_id=spot.user_id(), current_artist=artist)
+        spot.make_playlist()
     return render(request, 'home/index.html')
 
 def do_the_thing(request):

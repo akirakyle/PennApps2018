@@ -6,7 +6,7 @@ from django.db import IntegrityError
 
 class Spotify:
     def __init__(self):
-        scope = 'user-library-read user-top-read'
+        scope = 'user-library-read user-top-read playlist-modify-public playlist-read-private'
         cache = '.spotipyoauthcache'
 
         client_id=settings.SPOTIPY_CLIENT_ID
@@ -35,14 +35,16 @@ class Spotify:
         if token_info['access_token']:
             self.sp = spotipy.Spotify(token_info['access_token'])
             return True
-        for i in range(4,8):
-            sid = self.user_top_artist(i)
-            print(sid)
-            try:
-                artist = Artist.objects.create(spotify_id=sid)
-                Dislikeship.objects.create(user=usr, artist=artist)
-            except IntegrityError:
-                pass
+
+    def user_info(self):
+        return repr(self.sp.current_user())
+
+    def user_id(self):
+        return self.sp.current_user()['id']
+
+    def user_top_artist(self,i=0):
+        result = self.sp.current_user_top_artists(limit=30, offset=0, time_range='long_term')
+        return result['items'][i]['id']
 
     def related_artists(self, artist_id):
         result = self.sp.artist_related_artists(artist_id)
@@ -95,3 +97,6 @@ class Spotify:
                 return self.get_next_artist(likes.order_by('date')[0])
         #else:
 
+    def make_playlist(self):
+        result = self.sp.user_playlist_create(self.user_id(), 'sonicswype', public=True)
+        print(result)
