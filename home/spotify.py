@@ -85,6 +85,10 @@ class Spotify:
         result = self.sp.artists([artist_id])
         return result['artists'][0]['images'][0]['url']
 
+    def artist_song_url(self, artist_id):
+        result = self.sp.artist_top_tracks(artist_id)
+        return result['tracks'][0]['preview_url']
+
     def get_next_artist(self):
         usr = User.objects.get(spotify_id=self.user_id())
         likes = Likeship.objects.filter(user=usr)
