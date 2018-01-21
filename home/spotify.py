@@ -73,9 +73,12 @@ class Spotify:
             except IntegrityError:
                 pass
 
-    def related_artist(self, artist_id):
+    def related_artists(self, artist_id):
         result = self.sp.artist_related_artists(artist_id)
-        return result['artists'][0]['name']
+        artists = []
+        for i in range(len(result['artists'])):
+            artists.append(result['artists'][i]['id'])
+        return artists
 
     def artist_top_track(self, artist_id):
         result = self.sp.artist_top_tracks(artist_id)
@@ -89,7 +92,11 @@ class Spotify:
         result = self.sp.artist_top_tracks(artist_id)
         return result['tracks'][0]['preview_url']
 
-    def get_next_artist(self):
+    def artist_name(self, artist_id):
+        result = self.sp.artists([artist_id])
+        return result['artists'][0]['name']
+
+    def get_next_artist(self, artist_id):
         usr = User.objects.get(spotify_id=self.user_id())
         likes = Likeship.objects.filter(user=usr)
         print(likes)
@@ -99,6 +106,11 @@ class Spotify:
         print(artists)
         nlikes = artists.intersection(likes).count()
         print(nlikes)
-        ndislikes = artists.intersection(dislikes).count()
-        print(ndislikes)
-        return nlikes/(ndislikes+nlikes)
+        if nlikes/artists.count():
+            new_artists = related_artist(artist_id)
+            for new_id in new_artists:
+                if (not Likeship.objects.filter(artist_id=new_id).exists() or
+                    not Dislikeship.objects.filter(artist_id=new_id).exists()):
+                    break
+            else:
+                get_next_artist()
