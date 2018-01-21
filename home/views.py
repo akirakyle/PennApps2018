@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from home.spotify import Spotify
-from home.models import User, Artist, Likeship, Dislikeship# , Playlist
+from home.models import User, Artist, Likeship, Dislikeship
 from django.shortcuts import get_object_or_404
 
 spot = Spotify()
