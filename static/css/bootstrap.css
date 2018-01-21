@@ -5,14 +5,7 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-@font-face{
-    font-family:'Avenir';src:
-        url(../fonts/avenirlight.eot);src:url(../fonts/avenirlight.eot) format("embedded-opentype"),
-        url(../fonts/avenirlight.woff2) format("woff2"),
-        url(../fonts/avenirlight.woff) format("woff"),
-    url(../fonts/avenirlight.ttf) format("truetype"),
-    url(../fonts/avenirlight.svg#avenirlight) format("svg")
-};
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
