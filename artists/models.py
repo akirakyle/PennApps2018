@@ -11,9 +11,9 @@ class User(models.Model):
 class Likeship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    start_date = models.DateTimeField('date begun')
+    date = models.DateTimeField(auto_now_add=True)
 
 class Dislikeship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    start_date = models.DateTimeField('date begun')
+    date = models.DateTimeField(auto_now_add=True)
