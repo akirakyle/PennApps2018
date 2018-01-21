@@ -19,7 +19,9 @@ def index(request):
 
 def auth_page(request):
     spot.auth(request.get_full_path())
-    if not User.objects.get(spotify_id=spot.user_id()):
+    try:
+        User.objects.get(spotify_id=spot.user_id())
+    except User.DoesNotExist:
         User.objects.create(spotify_id=spot.user_id())
     return render(request, 'home/index.html') #{'auth_url': auth_url}) #HttpResponse("should be logged in")
 
