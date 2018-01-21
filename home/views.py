@@ -30,4 +30,4 @@ def do_the_thing(request):
 
 def detail(request, artist_id):
     artist = get_object_or_404(Artist, pk=artist_id)
-    return template.render(request, 'artists/detail.html', {'artist': artist, 'image': spot.artist_image_url(artist_id), 'song': spot.artist_song_url(artist_id)})
+    return template.render(request, 'artists/detail.html', {'artist': artist, 'image': spot.artist_image_url(artist_id), 'song': spot.artist_song_url(artist_id), 'name': spot.artist_name(artist_id)})
