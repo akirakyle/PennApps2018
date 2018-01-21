@@ -5,3 +5,4 @@ venv
 **/migrations/
 .spotipyoauthcache
 .sass-cache
+.DS_Store
