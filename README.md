@@ -1,5 +1,27 @@
 # PennApps2018
 
+## Installation
+Requires python 3. Install required python dependencies using requirements.txt
+```bash
+pip install -r requirements.txt
+```
+Install PostgreSQL ([guide here for macOS](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)), and create a user named admin
+
+You'll need to create a `.env` file in the PennApps2018 folder with the following info
+
+```
+DEBUG=True
+SECRET_KEY=somethingrandom
+DATABASE_URL=postgres://admin:password@localhost/pennapps
+ALLOWED_HOSTS=.localhost
+SPOTIPY_CLIENT_ID=
+SPOTIPY_CLIENT_SECRET=
+SPOTIPY_REDIRECT_URI=http://localhost:8000/auth/
+```
+Where the spotipy info you get from signing up for the [spotify API](developer.spotify.com/dashboard/applications)
+
+You can run the app locally with `python manage.py runserver`. To reset the database `python manage.py flush` and to reset the cached login credentials delete `.spotipyoauthcache`
+
 ## Inspiration
 
 Although Spotify has many premade playlists, these are usually based on one thing, whether it be the artist, genre, era, or mood. Playlists that took more than one of these into consideration are rare, and most likely created by hand. This, we wanted to create a way for an app/algorithm to create these types of playlists with ease.
