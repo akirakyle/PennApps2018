@@ -7,24 +7,19 @@
 </head>
 <body>
 	<div class="main">
-	<audio>
-		<source src="{{ song }}" type="audio/mp3">
-	</audio>
+	<video autoplay>
+		<source src="{{ song }}" type="audio/mpeg">
+	</video>
 	<div class="card">
 		<div class="containery">
 			<img src="{{ image }}" alt="Profile" style="width:100%">
 			<h3>{{ name }}</h3>
 		</div>
 	</div>
-	</div>
-	<a href='http://localhost:8000/liked/' class="spotify-button">:)</a>
+	<div class="likedis">
 	<a href='http://localhost:8000/disliked/' class="spotify-button">:(</a>
-	<script>
-		$('.card').keydown(function(e) {
-			if (e.which===39) {
-				window.location.replace("artists/{{ artist_id }}");
-			}
-		});
-	</script>
+	<a href='http://localhost:8000/liked/' class="spotify-button">:)</a>
+	</div>
+	</div>
 </body>
 </html>

@@ -26,6 +26,9 @@
 
 .main {
   text-align: center; }
+  .main video {
+    display: none;
+    position: absolute; }
   .main .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
@@ -42,5 +45,9 @@
     width: 100%; }
   .main .containery {
     padding: 2px 0px; }
+  .main .likedis {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px; }
 
 /*# sourceMappingURL=splash.css.map */
