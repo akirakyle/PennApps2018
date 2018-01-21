@@ -55,7 +55,6 @@ class Spotify:
 
     def artist_top_track(self, artist_id):
         result = self.sp.artist_top_tracks(artist_id)
-        print('artist_top_track', result['tracks'][0]['id'])
         return result['tracks'][0]['id']
 
     def artist_image_url(self, artist_id):
@@ -70,33 +69,21 @@ class Spotify:
         result = self.sp.artists([artist_id])
         return result['artists'][0]['name']
 
-    def get_next_artist(self, artist_id, liked):
+    def get_next_artist(self, artist_id, i=0):
         usr = User.objects.get(spotify_id=self.user_id())
-        likes = Likeship.objects.filter(user=usr)
-        dislikes = Dislikeship.objects.filter(user=usr)
-        n = 20
-        artists = likes.union(dislikes).order_by('date')[:n]
-        print('artist_id', artist_id)
-        print(artists)
-        nlikes = artists.intersection(likes).count()
-
-        if nlikes/n >= 0.0:
-            new_artists = self.related_artists(artist_id)
-            for new_id in new_artists:
-                print('new_id', new_id)
-                if Artist.objects.filter(spotify_id=new_id).exists():
-                    artist = Artist.objects.get(spotify_id=new_id)
-                    print(artist)
-                    print('Likeship', Likeship.objects.filter(user=usr,artist=artist).exists())
-                    print('dislikeshp', Dislikeship.objects.filter(user=new_id,artist=artist).exists())
-                    if not (Likeship.objects.filter(user=usr,artist=artist).exists() or
-                            Dislikeship.objects.filter(user=usr,artist=artist).exists()):
-                        return new_id
-                else:
+        new_artists = self.related_artists(artist_id)
+        for new_id in new_artists:
+            print('new_id', new_id)
+            if Artist.objects.filter(spotify_id=new_id).exists():
+                artist = Artist.objects.get(spotify_id=new_id)
+                if not(Likeship.objects.filter(user=usr,artist=artist).exists() or
+                       Dislikeship.objects.filter(user=usr,artist=artist).exists()):
                     return new_id
             else:
-                return self.get_next_artist(likes.order_by('date')[0])
-        #else:
+                return new_id
+        else:
+            likes = Likeship.objects.filter(user=usr)
+            return self.get_next_artist(likes.order_by('-date')[i].artist.spotify_id,i=i+1)
 
     def make_playlist(self):
         result = self.sp.user_playlist_create(self.user_id(), 'sonicswype', public=True)

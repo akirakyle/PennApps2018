@@ -27,7 +27,7 @@ def liked(request):
     usr = User.objects.get(spotify_id=spot.user_id())
     Likeship.objects.create(user=usr, artist=usr.current_artist)
     spot.add_to_playlist(usr.current_artist.spotify_id)
-    new_id = spot.get_next_artist(usr.current_artist.spotify_id,True)
+    new_id = spot.get_next_artist(usr.current_artist.spotify_id)
     artist = Artist.objects.create(spotify_id=new_id)
     usr.current_artist = artist
     usr.save()
@@ -36,7 +36,26 @@ def liked(request):
 def disliked(request):
     usr = User.objects.get(spotify_id=spot.user_id())
     Dislikeship.objects.create(user=usr, artist=usr.current_artist)
-    new_id = spot.get_next_artist(usr.current_artist.spotify_id,False)
+    likes = Likeship.objects.filter(user=usr)
+    dislikes = Dislikeship.objects.filter(user=usr)
+    n = 6
+    artists = likes.union(dislikes).order_by('-date')[:n]
+    print(likes)
+    print(dislikes)
+    print(artists)
+    nlikes = artists.intersection(likes).count()
+    print(nlikes)
+    print(nlikes/n)
+
+    new_id = ''
+    if nlikes/n >= 0.5:
+        new_id = spot.get_next_artist(usr.current_artist.spotify_id)
+    else:
+        if Likeship.objects.filter(user=usr).exists():
+            prev_artist = Likeship.objects.filter(user=usr).order_by('-date')[0].artist
+            new_id = spot.get_next_artist(prev_artist.spotify_id)
+        else:
+            new_id = spot.get_next_artist(usr.current_artist.spotify_id)
     artist = Artist.objects.create(spotify_id=new_id)
     usr.current_artist = artist
     usr.save()
