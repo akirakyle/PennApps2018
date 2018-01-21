@@ -2,14 +2,20 @@
 <html>
 <head>
 	{% include 'includes/head.html' %}
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/splash.css'%}">
 </head>
 <body>
+	<div class="main">
 	<audio>
 		<source src="{{ song }}" type="audio/mp3">
 	</audio>
 	<div class="card">
-		<img src="{{ image }}" alt="Profile" style="width:100%">
-		<h3>{{ name }}</h3>
+		<div class="containery">
+			<img src="{{ image }}" alt="Profile" style="width:100%">
+			<h3>{{ name }}</h3>
+		</div>
+	</div>
 	</div>
 	<script>
 		$('.card').keydown(function(e) {
