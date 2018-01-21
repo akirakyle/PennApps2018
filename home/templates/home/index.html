@@ -13,11 +13,8 @@
 	{% if auth_url %}
 	<a href='{{ auth_url }}' class="spotify-button">Login to Spotify</a>
 	{% else %}
+	<p><a href='http://localhost:8000/the_thing/' class="spotify-button">Do the thing</a></p>
 	</div>
-    <p><a href='http://localhost:8000/my_info/'>my_info</a></p>
-    <p><a href='http://localhost:8000/my_songs/'>my_songs</a></p>
-    <p><a href='http://localhost:8000/my_artists/'>my_artists</a></p>
-    <p><a href='http://localhost:8000/my_related/'>my_related</a></p>
-    {% endif %}
+  {% endif %}
 </body>
 </html>

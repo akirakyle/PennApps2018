@@ -1,7 +1,7 @@
 from django.conf import settings
 import spotipy
 from spotipy import oauth2
-from artists.models import Likeship, Dislikeship
+from artists.models import User, Artist, Likeship, Dislikeship
 
 class Spotify:
     def __init__(self):
@@ -24,7 +24,7 @@ class Spotify:
 
         if token_info:
             self.sp = spotipy.Spotify(token_info['access_token'])
-            print(token_info['access_token'])
+            #print(token_info['access_token'])
         else:
             return self.sp_oauth.get_authorize_url()
 
@@ -49,28 +49,41 @@ class Spotify:
             str += '<p>' + track['name'] + ' - ' + track['artists'][0]['name'] + '</p>'
         return str
 
-    def user_top_artists(self):
-        result = self.sp.current_user_top_artists(limit=2, offset=0, time_range='long_term')
-        return result['items'][0]['id']
+    def user_top_artists(self,i):
+        result = self.sp.current_user_top_artists(limit=30, offset=0, time_range='long_term')
+        return result['items'][i]['id']
+
+    def test_add_artists(self):
+        usr = User.objects.get(spotify_id=self.user_id())
+        for i in range(10):
+            sid = self.user_top_artists(i)
+            print(sid)
+            artist = Artist.objects.create(spotify_id=sid)
+            Likeship.objects.create(user=usr, artist=artist)
+        for i in range(10,20):
+            sid = self.user_top_artists(i)
+            print(sid)
+            artist = Artist.objects.create(spotify_id=sid)
+            Dislikeship.objects.create(user=usr, artist=artist)
 
     def related_artist(self, artist_id):
         result = self.sp.artist_related_artists(artist_id)
-        print(result['artists'][0]['name'])
         return result['artists'][0]['name']
 
     def artist_top_track(self, artist_id):
         result = self.sp.artist_top_tracks(artist_id)
-        print(result)
-        return(result)
+        return result['tracks'][0]['name']
 
     def get_next_artist(self):
-        likes = Likeship.objects.get(spotify_id=self.user_id())
+        usr = User.objects.get(spotify_id=self.user_id())
+        likes = Likeship.objects.filter(user=usr)
         print(likes)
-        dislikes = Dislikeship.objects.get(spotify_id=self.user_id())
+        dislikes = Dislikeship.objects.filter(user=usr)
         print(dislikes)
-        artists = likes.union(dislikes).order_by('start_date')[:20]
+        artists = likes.union(dislikes).order_by('date')[:20]
         print(artists)
         nlikes = artists.intersection(likes).count()
         print(nlikes)
         ndislikes = artists.intersection(dislikes).count()
         print(ndislikes)
+        return nlikes/(ndislikes+nlikes)
