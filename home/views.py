@@ -20,8 +20,6 @@ def auth_page(request):
 def do_the_thing(request):
     #stuff = spot.user_info()
     #stuff = spot.user_songs()
-    #stuff = spot.related_artists(spot.user_top_artists())
-    #stuff = spot.artist_top_track(spot.user_top_artists())
     #spot.test_add_artists()
     #stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artist()))
 
@@ -38,7 +36,17 @@ def liked(request):
     artist = Artist.objects.create(spotify_id=new_id)
     usr.current_artist = artist
     usr.save()
-    
+
+    return redirect('/artists/'+new_id)
+
+def disliked(request):
+    usr = User.objects.get(spotify_id=spot.user_id())
+    Dislikeship.objects.create(user=usr, artist=usr.current_artist)
+    new_id = spot.get_next_artist(usr.current_artist.spotify_id)
+    artist = Artist.objects.create(spotify_id=new_id)
+    usr.current_artist = artist
+    usr.save()
+
     return redirect('/artists/'+new_id)
 
 def detail(request, artist_id):
