@@ -99,18 +99,15 @@ class Spotify:
     def get_next_artist(self, artist_id):
         usr = User.objects.get(spotify_id=self.user_id())
         likes = Likeship.objects.filter(user=usr)
-        print(likes)
         dislikes = Dislikeship.objects.filter(user=usr)
-        print(dislikes)
-        artists = likes.union(dislikes).order_by('date')[:20]
-        print(artists)
+        n = 20
+        artists = likes.union(dislikes).order_by('date')[:n]
         nlikes = artists.intersection(likes).count()
-        print(nlikes)
-        if nlikes/artists.count():
-            new_artists = related_artist(artist_id)
+        if nlikes/n > 0.4:
+            new_artists = self.related_artists(artist_id)
             for new_id in new_artists:
                 if (not Likeship.objects.filter(artist_id=new_id).exists() or
                     not Dislikeship.objects.filter(artist_id=new_id).exists()):
-                    break
+                    return new_id
             else:
-                get_next_artist()
+                return get_next_artist(likes.order_by('date')[0])
