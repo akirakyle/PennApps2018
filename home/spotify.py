@@ -1,6 +1,7 @@
 from django.conf import settings
 import spotipy
 from spotipy import oauth2
+from artists.models import Likeship, Dislikeship
 
 class Spotify:
     def __init__(self):
@@ -56,3 +57,20 @@ class Spotify:
         result = self.sp.artist_related_artists(artist_id)
         print(result['artists'][0]['name'])
         return result['artists'][0]['name']
+
+    def artist_top_track(self, artist_id):
+        result = self.sp.artist_top_tracks(artist_id)
+        print(result)
+        return(result)
+
+    def get_next_artist(self):
+        likes = Likeship.objects.get(spotify_id=self.user_id())
+        print(likes)
+        dislikes = Dislikeship.objects.get(spotify_id=self.user_id())
+        print(dislikes)
+        artists = likes.union(dislikes).order_by('start_date')[:20]
+        print(artists)
+        nlikes = artists.intersection(likes).count()
+        print(nlikes)
+        ndislikes = artists.intersection(dislikes).count()
+        print(ndislikes)
