@@ -55,6 +55,7 @@ class Spotify:
 
     def artist_top_track(self, artist_id):
         result = self.sp.artist_top_tracks(artist_id)
+        print('artist_top_track', result['tracks'][0]['id'])
         return result['tracks'][0]['id']
 
     def artist_image_url(self, artist_id):
@@ -99,10 +100,9 @@ class Spotify:
 
     def make_playlist(self):
         result = self.sp.user_playlist_create(self.user_id(), 'sonicswype', public=True)
-        print(result['id'])
         return result['id']
 
     def add_to_playlist(self, artist_id):
-        playlist_id = User.objects.get(spotify_id=self.user_id()).playlist.spotify_id
+        playlist_id = User.objects.get(spotify_id=self.user_id()).playlist_id
         self.sp.user_playlist_add_tracks(self.user_id(), playlist_id,
-                                         self.artist_top_track(artist_id))
+                                         [self.artist_top_track(artist_id)])
