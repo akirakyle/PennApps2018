@@ -27,7 +27,7 @@ def do_the_thing(request):
     #stuff = spot.artist_image_url(spot.user_top_artists())
     #stuff = spot.artist_song_url(spot.user_top_artists())
     spot.test_add_artists()
-    stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artists()))
+    stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artist()))
 
     #artist_id = User.objects.get(spotify_id=spot.user_id()).current_artist
     #print(artist_id)
