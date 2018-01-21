@@ -80,17 +80,6 @@ h2{
 	background-size: cover; /*image occupies entire box*/
 }
 
-#lightning{
-	background-image: url('../images/lightning.png'); /*div-box. that box will have baackground of lightning*/
-}
-
-#cloud{
-	background-image: url('../images/cloud.png'); /*div-box. that box will have baackground of lightning*/
-}
-
-#people{
-	background-image: url('../images/people.png'); /*div-box. that box will have baackground of lightning*/
-}
 
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
