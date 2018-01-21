@@ -64,7 +64,7 @@ class Spotify:
                 Likeship.objects.create(user=usr, artist=artist)
             except IntegrityError:
                 pass
-        for i in range(10,20):
+        for i in range(4,8):
             sid = self.user_top_artist(i)
             print(sid)
             try:
