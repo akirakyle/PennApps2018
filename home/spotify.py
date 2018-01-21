@@ -1,7 +1,7 @@
 from django.conf import settings
 import spotipy
 from spotipy import oauth2
-from artists.models import User, Artist, Likeship, Dislikeship
+from home.models import User, Artist, Likeship, Dislikeship
 from django.db import IntegrityError
 
 class Spotify:
