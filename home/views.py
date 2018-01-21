@@ -18,35 +18,26 @@ def auth_page(request):
     return render(request, 'home/index.html')
 
 def do_the_thing(request):
-    #stuff = spot.user_info()
-    #stuff = spot.user_songs()
-    #spot.test_add_artists()
-    #stuff = spot.artist_name(spot.get_next_artist(spot.user_top_artist()))
-
     artist_id = User.objects.get(spotify_id=spot.user_id()).current_artist.spotify_id
-    #print(artist_id)
     artist = get_object_or_404(Artist, pk=artist_id)
-    #print(artist)
-    return render(request, 'home/detail.html', {'artist': artist, 'image': spot.artist_image_url(artist_id), 'song': spot.artist_song_url(artist_id), 'name': spot.artist_name(artist_id)})
+    return redirect('/artists/'+artist_id)
 
 def liked(request):
     usr = User.objects.get(spotify_id=spot.user_id())
     Likeship.objects.create(user=usr, artist=usr.current_artist)
-    new_id = spot.get_next_artist(usr.current_artist.spotify_id)
+    new_id = spot.get_next_artist(usr.current_artist.spotify_id,True)
     artist = Artist.objects.create(spotify_id=new_id)
     usr.current_artist = artist
     usr.save()
-
     return redirect('/artists/'+new_id)
 
 def disliked(request):
     usr = User.objects.get(spotify_id=spot.user_id())
     Dislikeship.objects.create(user=usr, artist=usr.current_artist)
-    new_id = spot.get_next_artist(usr.current_artist.spotify_id)
+    new_id = spot.get_next_artist(usr.current_artist.spotify_id,False)
     artist = Artist.objects.create(spotify_id=new_id)
     usr.current_artist = artist
     usr.save()
-
     return redirect('/artists/'+new_id)
 
 def detail(request, artist_id):

@@ -35,35 +35,6 @@ class Spotify:
         if token_info['access_token']:
             self.sp = spotipy.Spotify(token_info['access_token'])
             return True
-
-    def user_info(self):
-        return repr(self.sp.current_user())
-
-    def user_id(self):
-        return self.sp.current_user()['id']
-
-    def user_songs(self):
-        results = self.sp.current_user_saved_tracks()
-        str = ''
-        for item in results['items']:
-            track = item['track']
-            str += '<p>' + track['name'] + ' - ' + track['artists'][0]['name'] + '</p>'
-        return str
-
-    def user_top_artist(self,i=0):
-        result = self.sp.current_user_top_artists(limit=30, offset=0, time_range='long_term')
-        return result['items'][i]['id']
-
-    def test_add_artists(self):
-        usr = User.objects.get(spotify_id=self.user_id())
-        for i in range(10):
-            sid = self.user_top_artist(i)
-            print(sid)
-            try:
-                artist = Artist.objects.create(spotify_id=sid)
-                Likeship.objects.create(user=usr, artist=artist)
-            except IntegrityError:
-                pass
         for i in range(4,8):
             sid = self.user_top_artist(i)
             print(sid)
@@ -96,7 +67,7 @@ class Spotify:
         result = self.sp.artists([artist_id])
         return result['artists'][0]['name']
 
-    def get_next_artist(self, artist_id):
+    def get_next_artist(self, artist_id, liked):
         usr = User.objects.get(spotify_id=self.user_id())
         likes = Likeship.objects.filter(user=usr)
         dislikes = Dislikeship.objects.filter(user=usr)
@@ -105,6 +76,7 @@ class Spotify:
         print('artist_id', artist_id)
         print(artists)
         nlikes = artists.intersection(likes).count()
+
         if nlikes/n >= 0.0:
             new_artists = self.related_artists(artist_id)
             for new_id in new_artists:
@@ -122,3 +94,4 @@ class Spotify:
             else:
                 return self.get_next_artist(likes.order_by('date')[0])
         #else:
+
