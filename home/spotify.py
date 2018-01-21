@@ -2,6 +2,7 @@ from django.conf import settings
 import spotipy
 from spotipy import oauth2
 from artists.models import User, Artist, Likeship, Dislikeship
+from django.db import IntegrityError
 
 class Spotify:
     def __init__(self):
@@ -49,7 +50,7 @@ class Spotify:
             str += '<p>' + track['name'] + ' - ' + track['artists'][0]['name'] + '</p>'
         return str
 
-    def user_top_artists(self,i):
+    def user_top_artists(self,i=0):
         result = self.sp.current_user_top_artists(limit=30, offset=0, time_range='long_term')
         return result['items'][i]['id']
 
@@ -58,13 +59,19 @@ class Spotify:
         for i in range(10):
             sid = self.user_top_artists(i)
             print(sid)
-            artist = Artist.objects.create(spotify_id=sid)
-            Likeship.objects.create(user=usr, artist=artist)
+            try:
+                artist = Artist.objects.create(spotify_id=sid)
+                Likeship.objects.create(user=usr, artist=artist)
+            except IntegrityError:
+                pass
         for i in range(10,20):
             sid = self.user_top_artists(i)
             print(sid)
-            artist = Artist.objects.create(spotify_id=sid)
-            Dislikeship.objects.create(user=usr, artist=artist)
+            try:
+                artist = Artist.objects.create(spotify_id=sid)
+                Dislikeship.objects.create(user=usr, artist=artist)
+            except IntegrityError:
+                pass
 
     def related_artist(self, artist_id):
         result = self.sp.artist_related_artists(artist_id)
@@ -73,6 +80,10 @@ class Spotify:
     def artist_top_track(self, artist_id):
         result = self.sp.artist_top_tracks(artist_id)
         return result['tracks'][0]['name']
+
+    def artist_image_url(self, artist_id):
+        result = self.sp.artists([artist_id])
+        return result['artists'][0]['images'][0]['url']
 
     def get_next_artist(self):
         usr = User.objects.get(spotify_id=self.user_id())

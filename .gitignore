@@ -4,3 +4,4 @@ venv
 **/__pycache__/
 **/migrations/
 .spotipyoauthcache
+.sass-cache
